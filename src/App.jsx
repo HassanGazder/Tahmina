@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { useForm, ValidationError } from "@formspree/react";
 import {
   ArrowDown,
   ArrowUpRight,
@@ -35,9 +36,20 @@ const work = [
 
 const services = ["Sponsored reels", "UGC campaigns", "Event coverage", "Product storytelling", "Creative direction", "Ambassadorships"];
 
+const collaborationTypes = [
+  "Instagram Reels",
+  "Instagram Stories",
+  "Instagram Feed Posts",
+  "TikTok Videos",
+  "YouTube Promotions",
+  "Event Coverage",
+  "Brand Ambassador Partnership",
+  "Monthly Marketing Campaign",
+];
+
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [formState, handleFormSubmit] = useForm("xjyywlvj");
 
   useEffect(() => {
     const close = () => setMenuOpen(false);
@@ -157,17 +169,61 @@ function App() {
             <div className="contact-note"><Instagram size={18} /> Social-first creative</div>
             <div className="contact-note"><Mail size={18} /> Brand enquiries</div>
           </motion.div>
-          <motion.form {...fadeUp} onSubmit={(event) => { event.preventDefault(); setSubmitted(true); }}>
-            {submitted ? (
+          <motion.form {...fadeUp} onSubmit={handleFormSubmit} encType="multipart/form-data">
+            {formState.succeeded ? (
               <div className="success"><span><Check /></span><h3>Brief received.</h3><p>Thank you. Tahmina will be in touch soon.</p></div>
             ) : (
               <>
-                <label>Name<input name="name" required placeholder="Your name" /></label>
-                <label>Email<input name="email" type="email" required placeholder="you@brand.com" /></label>
-                <label>Brand / company<input name="brand" placeholder="Brand name" /></label>
-                <label>Campaign type<select name="campaign" defaultValue=""><option value="" disabled>Select one</option><option>Sponsored content</option><option>UGC campaign</option><option>Event coverage</option><option>Ambassadorship</option></select></label>
-                <label className="full">Tell me about the idea<textarea name="message" rows="5" required placeholder="Campaign, deliverables, timing and budget" /></label>
-                <button className="button submit" type="submit">Send enquiry <ArrowUpRight size={16} /></button>
+                <div className="form-section-title full"><span>01</span> Brand details</div>
+                <label>Company / Brand Name<input name="companyBrand" required placeholder="Brand or company name" /></label>
+                <label>Contact Person's Name<input name="contactName" required placeholder="Full name" /></label>
+                <label>
+                  Business Email Address
+                  <input name="email" type="email" required placeholder="you@brand.com" />
+                  <ValidationError prefix="Email" field="email" errors={formState.errors} />
+                </label>
+                <label>WhatsApp / Contact Number<input name="phone" type="tel" required placeholder="+971 50 000 0000" /></label>
+                <label className="full">Company Website & Instagram Page<input name="websiteInstagram" type="text" placeholder="Website URL and @instagram" /></label>
+                <label className="full">Industry / Business Category<input name="industry" required placeholder="Fashion, beauty, hospitality, real estate..." /></label>
+
+                <div className="form-section-title full"><span>02</span> Collaboration</div>
+                <fieldset className="collaboration-options full">
+                  <legend>Type of Collaboration Required</legend>
+                  <div>
+                    {collaborationTypes.map((type) => (
+                      <label key={type} className="check-option">
+                        <input type="checkbox" name="collaborationTypes" value={type} />
+                        <span><Check size={13} /></span>
+                        {type}
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
+                <label className="full">Product or Service to Be Promoted<textarea name="productService" rows="3" required placeholder="What should the campaign feature?" /></label>
+                <label className="full">
+                  Campaign Description & Objectives
+                  <textarea name="message" rows="5" required placeholder="Describe the campaign idea, goals and key message" />
+                  <ValidationError prefix="Campaign description" field="message" errors={formState.errors} />
+                </label>
+                <label>Target Audience<input name="targetAudience" required placeholder="Audience age, interests and market" /></label>
+                <label>Campaign Location<input name="campaignLocation" required placeholder="Dubai, UAE or remote" /></label>
+                <label>Preferred Promotion Date<input name="promotionDate" type="date" required /></label>
+                <label>Marketing Budget<input name="budget" required placeholder="Budget or expected range" /></label>
+                <label className="full">Required Deliverables<textarea name="deliverables" rows="4" required placeholder="Number of reels, stories, posts, event hours..." /></label>
+
+                <div className="form-section-title full"><span>03</span> Supporting information</div>
+                <label className="full file-field">
+                  Campaign Brief / File Upload
+                  <input name="campaignBrief" type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.jpeg,.png" />
+                  <small>PDF, Word, PowerPoint or image files</small>
+                </label>
+                <label className="full">Additional Requirements<textarea name="additionalRequirements" rows="4" placeholder="Usage rights, exclusivity, deadlines or anything else we should know" /></label>
+
+                <ValidationError errors={formState.errors} className="form-error full" />
+                <button className="button submit" type="submit" disabled={formState.submitting}>
+                  {formState.submitting ? "Sending enquiry..." : "Send enquiry"}
+                  {!formState.submitting && <ArrowUpRight size={16} />}
+                </button>
               </>
             )}
           </motion.form>

@@ -71,7 +71,7 @@ h2 em { color: var(--coral); font-weight: 400; }
 .process > div { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 .process div p { margin: 0; display: flex; align-items: center; gap: 12px; font-family: "Italiana", serif; font-size: 25px; }
 .process div span { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; background: var(--coral); font-family: "DM Sans"; font-size: 11px; }
-.contact { display: grid; grid-template-columns: .9fr 1.1fr; gap: 8vw; background: #171714; color: white; }
+.contact { display: grid; grid-template-columns: .72fr 1.28fr; gap: clamp(48px, 7vw, 110px); background: #171714; color: white; }
 .contact-intro > p:not(.section-label) { max-width: 500px; color: #aaa79f; line-height: 1.7; }
 .contact-note { margin-top: 22px; display: flex; gap: 12px; color: #d5d0c7; font-size: 13px; }
 .contact form { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-content: start; }
@@ -80,7 +80,24 @@ h2 em { color: var(--coral); font-weight: 400; }
 .contact select option { color: #111; }
 .contact input:focus, .contact select:focus, .contact textarea:focus { border-color: var(--coral); }
 .contact .full { grid-column: 1 / -1; }
-.submit { width: max-content; background: var(--coral); }
+.form-section-title { margin-top: 10px; padding: 18px 0 4px; display: flex; align-items: center; gap: 12px; border-top: 1px solid #35332f; color: #f2eee6; font-family: "Italiana", serif; font-size: 21px; letter-spacing: 0; }
+.form-section-title:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+.form-section-title span { color: var(--coral); font-family: inherit; font-size: 13px; }
+.collaboration-options { margin: 0; padding: 0; border: 0; }
+.collaboration-options legend { margin-bottom: 14px; color: #ccc8c0; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; }
+.collaboration-options > div { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; }
+.contact .check-option { min-height: 42px; padding: 10px 12px; flex-direction: row; align-items: center; gap: 10px; border: 1px solid #403e39; color: #d8d4cc; font-size: 11px; letter-spacing: 0; text-transform: none; cursor: pointer; transition: border-color .25s, background .25s; }
+.contact .check-option:hover { border-color: var(--coral); background: rgba(255, 125, 104, .05); }
+.contact .check-option input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.contact .check-option span { width: 19px; height: 19px; flex: 0 0 19px; display: grid; place-items: center; border: 1px solid #68645d; color: transparent; }
+.contact .check-option:has(input:checked) { border-color: var(--coral); background: rgba(255, 125, 104, .08); }
+.contact .check-option input:checked + span { border-color: var(--coral); background: var(--coral); color: #171714; }
+.file-field input[type="file"] { padding: 14px; border: 1px dashed #55524d; color: #aaa79f; cursor: pointer; }
+.file-field input[type="file"]::file-selector-button { margin-right: 14px; border: 0; padding: 9px 13px; background: #ece6dc; color: #171714; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
+.file-field small { color: #77746e; font-size: 10px; letter-spacing: 0; text-transform: none; }
+.form-error, .contact label > [role="alert"] { color: #ff9c8c; font-size: 11px; letter-spacing: 0; text-transform: none; }
+.submit { width: max-content; min-width: 184px; background: var(--coral); }
+.submit:disabled { cursor: wait; opacity: .65; transform: none; }
 .success { grid-column: 1 / -1; min-height: 360px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
 .success span { width: 58px; aspect-ratio: 1; display: grid; place-items: center; border-radius: 50%; background: var(--coral); color: #111; }
 .success h3 { font-family: "Italiana", serif; font-size: 44px; margin: 20px 0 5px; }
@@ -109,6 +126,8 @@ footer .wordmark { color: white; }
   .process > div { grid-template-columns: 1fr 1fr; }
   .contact form { grid-template-columns: 1fr; }
   .contact .full { grid-column: auto; }
+  .collaboration-options > div { grid-template-columns: 1fr; }
+  .submit { width: 100%; }
   footer { flex-direction: column; align-items: flex-start; }
 }
 
